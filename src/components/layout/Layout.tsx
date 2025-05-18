@@ -1,4 +1,5 @@
-import React, { ReactNode, Dispatch, SetStateAction } from 'react';
+import React from 'react';
+import type { ReactNode, Dispatch, SetStateAction } from 'react';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
 import type { TabType } from '../../types/navigation';
@@ -13,22 +14,22 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab }) =>
   return (
     <div className="min-h-screen bg-gradient-dark text-text-primary flex">
       {/* Sidebar - hidden on mobile, visible on md screens and up */}
-      <div className="hidden md:block">
+      <div className="hidden md:block fixed top-0 left-0 z-50 w-20">
         <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
 
       {/* Main content area */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-h-screen w-full md:ml-20">
         {/* Top navbar */}
         <Navbar />
 
         {/* Main content */}
-        <main className="flex-1 pt-20 pb-20 md:pb-6 md:pl-4 container-fluid">
+        <main className="flex-1 container-fluid pt-20 pb-20 md:pb-6 relative z-10">
           {children}
         </main>
 
         {/* Footer */}
-        <footer className="py-4 border-t border-border-dark text-text-tertiary">
+        <footer className="py-4 border-t border-border-dark text-text-tertiary relative z-10">
           <div className="container-fluid">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <div className="mb-4 md:mb-0">
