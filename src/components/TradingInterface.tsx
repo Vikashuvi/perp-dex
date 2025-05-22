@@ -106,33 +106,36 @@ const TradingInterface = () => {
                 >
                   Positions
                 </button>
+                <button
+                  className={`py-3 px-5 font-medium transition-colors duration-200 ${
+                    activeTab === 'orderbook'
+                      ? isDarkMode
+                        ? 'border-b-2 border-blue-500 text-blue-400'
+                        : 'border-b-2 border-blue-500 text-blue-600'
+                      : isDarkMode
+                        ? 'text-gray-400 hover:bg-gray-700'
+                        : 'text-gray-500 hover:bg-gray-100'
+                  }`}
+                  onClick={() => setActiveTab('orderbook')}
+                >
+                  Order Book
+                </button>
               </div>
             </div>
 
             <div className="p-4">
               {activeTab === 'trade' ? (
                 <OrderForm />
-              ) : (
+              ) : activeTab === 'positions' ? (
                 <PositionsList />
+              ) : (
+                <OrderBook />
               )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Order book */}
-      <div className={`mt-6 rounded-lg shadow-sm overflow-hidden transition-colors duration-200 ${
-        isDarkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'
-      }`}>
-        <div className={`px-4 py-3 border-b ${
-          isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-gray-50'
-        }`}>
-          <h2 className="text-lg font-semibold">Order Book</h2>
-        </div>
-        <div className="p-4">
-          <OrderBook />
-        </div>
-      </div>
     </div>
   );
 };

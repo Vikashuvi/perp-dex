@@ -77,29 +77,33 @@ const AdvancedTradingInterface = () => {
                 >
                   Positions
                 </button>
+                <button
+                  className={`py-3 px-4 font-medium ${
+                    activeTab === 'orderbook' 
+                      ? 'border-b-2 border-blue-500 text-blue-500' 
+                      : 'text-gray-500 hover:bg-gray-100'
+                  }`}
+                  onClick={() => setActiveTab('orderbook')}
+                >
+                  Order Book
+                </button>
               </div>
             </div>
 
             <div className="p-4">
               {activeTab === 'trade' ? (
                 <AdvancedOrderForm />
-              ) : (
+              ) : activeTab === 'positions' ? (
                 <AdvancedPositionsList />
+              ) : (
+                <OrderBook />
               )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Order book */}
-      <div className="mt-4 border border-gray-200 rounded-lg overflow-hidden">
-        <div className="bg-gray-50 p-3 border-b">
-          <h2 className="text-lg font-semibold">Order Book</h2>
-        </div>
-        <div className="p-4">
-          <OrderBook />
-        </div>
-      </div>
+
     </div>
   );
 };

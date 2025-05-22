@@ -469,12 +469,16 @@ body {
   border-color: rgba(239, 68, 68, 0.3);
 }
 
-.order-book-spread {
-  @apply py-3 px-4 rounded-md mb-4 flex justify-between items-center;
-  background: linear-gradient(90deg, rgba(124, 58, 237, 0.15), rgba(124, 58, 237, 0.05));
-  border-left: 2px solid rgba(124, 58, 237, 0.5);
-  box-shadow: inset 0 0 15px rgba(124, 58, 237, 0.1),
-              0 0 10px rgba(124, 58, 237, 0.15);
+  .order-book-spread {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  background-color: rgba(17, 24, 39, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(5px);
 }
 
@@ -602,11 +606,14 @@ body {
   }
 
   .glass-card {
-    @apply rounded-xl border border-border-dark/50 bg-card-darker/20 backdrop-blur-xl
-           transition-all duration-300 relative overflow-hidden;
+    @apply rounded-xl border border-border-dark/50 bg-card-darker/30 backdrop-blur-xl
+           transition-all duration-300 relative overflow-visible;
     box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.15),
                 0 8px 32px 0 rgba(0, 0, 0, 0.45),
                 0 0 15px 0 rgba(124, 58, 237, 0.2);
+    margin-bottom: 2rem;
+    padding: 0.5rem;
+    z-index: 1;
   }
 
   .glass-card::before {
@@ -663,11 +670,13 @@ body {
   }
 
   .glass-panel {
-    @apply bg-card-darker/20 backdrop-blur-xl border border-border-dark/30 rounded-xl;
+    @apply bg-card-darker/30 backdrop-blur-xl border border-border-dark/30 rounded-xl;
     box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.1),
                 0 4px 20px 0 rgba(0, 0, 0, 0.4),
                 0 0 10px 0 rgba(124, 58, 237, 0.2);
     transition: all 0.3s ease;
+    z-index: 1;
+    overflow: visible;
   }
 
   .glass-panel:hover {
