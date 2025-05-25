@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Prevent horizontal overflow */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 :root {
   /* Primary gradient colors - enhanced vibrancy */
   --gradient-primary-start: #4f46e5;
@@ -436,56 +442,7 @@ body {
   opacity: 0.5;
 }
 
-/* Order book styles */
-.order-book-row {
-  @apply relative overflow-hidden rounded-md transition-all duration-200;
-  backdrop-filter: blur(4px);
-  border: 1px solid transparent;
-}
 
-.order-book-row:hover {
-  transform: translateX(3px);
-}
-
-.order-book-bid {
-  background: linear-gradient(90deg, rgba(16, 185, 129, 0.12), rgba(16, 185, 129, 0.03));
-  border-left: 2px solid rgba(16, 185, 129, 0.4);
-}
-
-.order-book-bid:hover {
-  background: linear-gradient(90deg, rgba(16, 185, 129, 0.18), rgba(16, 185, 129, 0.06));
-  box-shadow: 0 0 15px rgba(16, 185, 129, 0.25);
-  border-color: rgba(16, 185, 129, 0.3);
-}
-
-.order-book-ask {
-  background: linear-gradient(90deg, rgba(239, 68, 68, 0.12), rgba(239, 68, 68, 0.03));
-  border-left: 2px solid rgba(239, 68, 68, 0.4);
-}
-
-.order-book-ask:hover {
-  background: linear-gradient(90deg, rgba(239, 68, 68, 0.18), rgba(239, 68, 68, 0.06));
-  box-shadow: 0 0 15px rgba(239, 68, 68, 0.25);
-  border-color: rgba(239, 68, 68, 0.3);
-}
-
-  .order-book-spread {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
-  border-radius: 0.5rem;
-  background-color: rgba(17, 24, 39, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(5px);
-}
-
-.order-book-depth {
-  @apply absolute inset-0 z-0 transition-all duration-300;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), transparent);
-}
 
 /* Notification styles */
 .notification-badge {

@@ -1,21 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { useAppSelector, useAppDispatch } from '../store/Hooks';
-import { openPosition } from '../store/PositionSlice';
+import { useAppSelector } from '../store/Hooks';
+import { useContracts } from '../hooks/useContracts';
+import { usePriceData } from '../hooks/usePriceData';
+import { ethers } from 'ethers';
 
 const OrderForm = () => {
-  const dispatch = useAppDispatch();
-  const { address } = useAppSelector((state) => state.wallet);
+  const { address, isConnected } = useAppSelector((state) => state.wallet);
   const { balances } = useAppSelector((state) => state.tokenBalances);
-  
+
+  // Use our custom hooks
+  const {
+    openPosition,
+    userBalance,
+    loading,
+    error,
+    parseUSDC,
+    formatUSDC
+  } = useContracts();
+
+  const {
+    currentPrice,
+    formatPrice
+  } = usePriceData('ETH-USD');
+
   // Form state
   const [orderType, setOrderType] = useState('market');
   const [positionType, setPositionType] = useState('long');
   const [leverage, setLeverage] = useState(1);
   const [margin, setMargin] = useState('');
   const [limitPrice, setLimitPrice] = useState('');
-  const [marketPrice, setMarketPrice] = useState(1800); // Mock price, would come from oracle
   const [size, setSize] = useState('0');
-  
+
   // Calculate position size when margin or leverage changes
   useEffect(() => {
     if (margin && !isNaN(parseFloat(margin))) {
@@ -25,38 +40,56 @@ const OrderForm = () => {
       setSize('0');
     }
   }, [margin, leverage]);
-  
+
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
+    if (!isConnected) {
+      alert('Please connect your wallet first');
+      return;
+    }
+
     if (!margin || parseFloat(margin) <= 0) {
       alert('Please enter a valid margin amount');
       return;
     }
-    
-    // Dispatch action to open position
-    dispatch(openPosition({
-      margin: parseFloat(margin),
-      leverage,
-      isLong: positionType === 'long',
-      entryPrice: marketPrice,
-      orderType
-    }));
-    
-    // Reset form
-    setMargin('');
-  };
-  
-  // Handle max button click
-  const handleMaxClick = () => {
-    // Find USDC balance
-    const usdcBalance = balances.find(b => b.token.symbol === 'USDC');
-    if (usdcBalance) {
-      setMargin(usdcBalance.formattedBalance);
+
+    try {
+      // Convert margin to bigint with proper decimals
+      const marginBigInt = parseUSDC(margin);
+
+      // Call contract to open position
+      const tx = await openPosition(
+        marginBigInt,
+        leverage,
+        positionType === 'long'
+      );
+
+      if (tx) {
+        // Reset form on success
+        setMargin('');
+      }
+    } catch (err) {
+      console.error('Error opening position:', err);
+      alert(`Failed to open position: ${(err as Error).message}`);
     }
   };
-  
+
+  // Handle max button click
+  const handleMaxClick = () => {
+    if (userBalance) {
+      // Use available balance from contract
+      setMargin(formatUSDC(userBalance.available));
+    } else {
+      // Fallback to redux store balance
+      const usdcBalance = balances.find(b => b.token.symbol === 'USDC');
+      if (usdcBalance) {
+        setMargin(usdcBalance.formattedBalance);
+      }
+    }
+  };
+
   return (
     <div className="order-form">
       <form onSubmit={handleSubmit}>
@@ -79,7 +112,7 @@ const OrderForm = () => {
             </button>
           </div>
         </div>
-        
+
         {/* Position type selector */}
         <div className="mb-4">
           <div className="flex rounded-md overflow-hidden border">
@@ -99,17 +132,18 @@ const OrderForm = () => {
             </button>
           </div>
         </div>
-        
+
         {/* Market price display */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Market Price
           </label>
           <div className="border rounded-md p-2 bg-gray-50">
-            ${marketPrice.toFixed(2)} USDC
+            ${currentPrice ? parseFloat(formatPrice(currentPrice)).toFixed(2) : '0.00'} USDC
+            {loading.marketData && <span className="ml-2 text-xs text-blue-500">(Loading...)</span>}
           </div>
         </div>
-        
+
         {/* Limit price input (only shown for limit orders) */}
         {orderType === 'limit' && (
           <div className="mb-4">
@@ -134,7 +168,7 @@ const OrderForm = () => {
             </div>
           </div>
         )}
-        
+
         {/* Margin input */}
         <div className="mb-4">
           <label htmlFor="margin" className="block text-sm font-medium text-gray-700 mb-1">
@@ -165,7 +199,7 @@ const OrderForm = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Leverage slider */}
         <div className="mb-4">
           <label htmlFor="leverage" className="block text-sm font-medium text-gray-700 mb-1">
@@ -189,7 +223,7 @@ const OrderForm = () => {
             <span>20x</span>
           </div>
         </div>
-        
+
         {/* Position size display */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -199,16 +233,28 @@ const OrderForm = () => {
             ${size} USDC
           </div>
         </div>
-        
+
         {/* Submit button */}
         <button
           type="submit"
+          disabled={loading.openPosition || !isConnected}
           className={`w-full py-3 rounded-md font-medium ${
             positionType === 'long' ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'
-          } text-white`}
+          } text-white ${(loading.openPosition || !isConnected) ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
-          {positionType === 'long' ? 'Open Long Position' : 'Open Short Position'}
+          {loading.openPosition
+            ? 'Processing...'
+            : positionType === 'long'
+              ? 'Open Long Position'
+              : 'Open Short Position'}
         </button>
+
+        {/* Error message */}
+        {error.openPosition && (
+          <div className="mt-2 text-red-500 text-sm">
+            {error.openPosition}
+          </div>
+        )}
       </form>
     </div>
   );

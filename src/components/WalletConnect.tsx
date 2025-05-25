@@ -1,11 +1,14 @@
 import { useDispatch } from "react-redux"
 import { setWalletConnection, disconnectWallet, updateChainId } from "../store/WalletSlice"
 import { useAppSelector } from "../store/Hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { contractUtils } from "../utils/ContractUtils";
+import NetworkSwitcher from "./NetworkSwitcher";
 
 const WalletConnect = () => {
   const dispatch = useDispatch();
   const { address, isConnected } = useAppSelector((state) => state.wallet);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     checkIfWalletIsConnected();
@@ -23,6 +26,16 @@ const WalletConnect = () => {
         dispatch(updateChainId(chainId));
       });
     }
+
+    // Clean up event listeners when component unmounts
+    return () => {
+      if (window.ethereum) {
+        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+        window.ethereum.removeListener('chainChanged', (chainId: string) => {
+          dispatch(updateChainId(chainId));
+        });
+      }
+    };
   }, [dispatch]);
 
   const handleAccountsChanged = async (accounts: string[]) => {
@@ -55,27 +68,39 @@ const WalletConnect = () => {
   };
 
   const connectWallet = async () => {
+    setLoading(true);
     try {
-      if (window.ethereum) {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+      // Use contractUtils to connect wallet
+      const connectedAddress = await contractUtils.connectWallet();
+
+      if (connectedAddress) {
+        const chainId = await window.ethereum!.request({
+          method: 'eth_chainId'
+        });
 
         dispatch(setWalletConnection({
-          address: accounts[0],
+          address: connectedAddress,
           chainId
         }));
 
-        console.log('Connected to wallet:', accounts[0]);
+        console.log('Connected to wallet:', connectedAddress);
       } else {
-        alert('Please install MetaMask to connect your wallet!');
+        alert('Failed to connect wallet. Please try again.');
       }
     } catch (error) {
       console.error('Error connecting to wallet:', error);
+      alert('Error connecting to wallet: ' + (error as Error).message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="wallet-connect">
+    <div className="wallet-connect flex items-center space-x-4">
+      {/* Network Switcher - only show when connected */}
+      {isConnected && <NetworkSwitcher />}
+
+      {/* Wallet Connection Button */}
       {isConnected ? (
         <div className="glass px-4 py-2 rounded-lg border border-border-dark flex items-center space-x-2 transition-all duration-300 hover:shadow-[0_0_15px_rgba(124,58,237,0.3)]">
           <div className="w-2 h-2 rounded-full bg-success"></div>
@@ -84,9 +109,10 @@ const WalletConnect = () => {
       ) : (
         <button
           onClick={connectWallet}
-          className="bg-gradient-primary hover:opacity-90 text-white font-medium py-2 px-6 rounded-lg transition-all duration-300 shadow-[0_0_15px_rgba(124,58,237,0.3)] hover:shadow-[0_0_20px_rgba(124,58,237,0.5)]"
+          disabled={loading}
+          className={`bg-gradient-primary hover:opacity-90 text-white font-medium py-2 px-6 rounded-lg transition-all duration-300 shadow-[0_0_15px_rgba(124,58,237,0.3)] hover:shadow-[0_0_20px_rgba(124,58,237,0.5)] ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
         >
-          Connect Wallet
+          {loading ? 'Connecting...' : 'Connect Wallet'}
         </button>
       )}
     </div>

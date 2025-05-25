@@ -3,6 +3,7 @@ import { addNotification } from './store/NotificationSlice'
 import { useAppDispatch } from './store/Hooks'
 import Layout from './components/layout/Layout'
 import Dashboard from './components/Dashboard'
+import ContractEventListener from './components/ContractEventListener'
 import type { TabType } from './types/navigation'
 
 function App() {
@@ -45,9 +46,14 @@ function App() {
   }, [dispatch]);
 
   return (
-    <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
-      <Dashboard activeTab={activeTab} />
-    </Layout>
+    <>
+      {/* Contract event listener - doesn't render anything */}
+      <ContractEventListener />
+
+      <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
+        <Dashboard activeTab={activeTab} />
+      </Layout>
+    </>
   )
 }
 

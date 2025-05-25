@@ -7,12 +7,18 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "test:coverage": "hardhat coverage",
+    "deploy:local": "hardhat run scripts/deploy.cjs --network hardhat",
+    "node": "hardhat node"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.3.0",
     "@reduxjs/toolkit": "^2.8.2",
     "@types/uuid": "^10.0.0",
+    "dotenv": "^16.5.0",
     "ethers": "^6.14.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

@@ -7,6 +7,18 @@ pragma solidity ^0.8.20;
  */
 interface ILiquidityPool {
     /**
+     * @dev Get total liquidity in the pool
+     * @return Total liquidity amount
+     */
+    function totalLiquidity() external view returns (uint256);
+    
+    /**
+     * @dev Get current utilization rate
+     * @return Current utilization rate
+     */
+    function utilizationRate() external view returns (uint256);
+    
+    /**
      * @dev Add liquidity to the pool
      * @param _amount Amount of collateral tokens to add
      */

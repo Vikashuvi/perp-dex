@@ -3,7 +3,6 @@ import type { TabType } from '../types/navigation';
 import BalanceCard from './cards/BalanceCard';
 import TradingCard from './cards/TradingCard';
 import ChartCard from './cards/ChartCard';
-import OrderBookCard from './cards/OrderBookCard';
 import RiskPool from './RiskPool';
 
 interface DashboardProps {
@@ -12,7 +11,7 @@ interface DashboardProps {
 
 const Dashboard: React.FC<DashboardProps> = ({ activeTab }) => {
   return (
-    <div className="dashboard">
+    <div className="dashboard overflow-x-hidden">
       {activeTab === 'trade' && (
         <div className="space-y-8">
           {/* Main trading grid */}
@@ -24,17 +23,16 @@ const Dashboard: React.FC<DashboardProps> = ({ activeTab }) => {
               <RiskPool />
             </div>
 
-            {/* Right column - Chart and Order Book */}
-            <div className="lg:col-span-8 space-y-8">
+            {/* Right column - Chart */}
+            <div className="lg:col-span-8">
               <ChartCard />
-              <OrderBookCard />
             </div>
           </div>
 
           {/* Background glow effects */}
           <div className="fixed inset-0 -z-20 overflow-hidden pointer-events-none">
-            <div className="absolute top-1/4 left-1/4 w-1/2 h-1/2 bg-primary-600/10 rounded-full blur-[120px]"></div>
-            <div className="absolute bottom-1/3 right-1/3 w-1/3 h-1/3 bg-secondary-600/10 rounded-full blur-[100px]"></div>
+            <div className="absolute top-1/4 left-1/4 w-1/2 h-1/2 bg-primary-600/10 rounded-full blur-[120px] max-w-full"></div>
+            <div className="absolute bottom-1/3 right-1/3 w-1/3 h-1/3 bg-secondary-600/10 rounded-full blur-[100px] max-w-full"></div>
           </div>
         </div>
       )}

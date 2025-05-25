@@ -12,14 +12,14 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab }) => {
   return (
-    <div className="min-h-screen bg-gradient-dark text-text-primary flex">
+    <div className="min-h-screen bg-gradient-dark text-text-primary flex overflow-x-hidden">
       {/* Sidebar - hidden on mobile, visible on md screens and up */}
       <div className="hidden md:block fixed top-0 left-0 z-50 w-20">
         <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
 
       {/* Main content area */}
-      <div className="flex-1 flex flex-col min-h-screen w-full md:ml-20">
+      <div className="flex-1 flex flex-col min-h-screen w-full md:ml-20 overflow-x-hidden">
         {/* Top navbar */}
         <Navbar />
 

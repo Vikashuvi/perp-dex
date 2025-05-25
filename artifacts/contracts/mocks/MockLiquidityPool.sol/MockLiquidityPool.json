@@ -1,0 +1,183 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "MockLiquidityPool",
+  "sourceName": "contracts/mocks/MockLiquidityPool.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "addLiquidity",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "claimRewards",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "collectFees",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getInsuranceFund",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_provider",
+          "type": "address"
+        }
+      ],
+      "name": "getProviderInfo",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "sharePercentage",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "rewardsAccrued",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "removeLiquidity",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "setInsuranceFund",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "setTotalLiquidity",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "totalLiquidity",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "newRate",
+          "type": "uint256"
+        }
+      ],
+      "name": "updateUtilizationRate",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "useInsuranceFund",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "utilizationRate",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405269d3c21bcecceda100000060005569152d02c7e14af680000060025534801561002c57600080fd5b506103148061003c6000396000f3fe608060405234801561001057600080fd5b50600436106100b45760003560e01c80636c321c8a116100715780636c321c8a146101135780637583902f1461011b5780639c8f9f231461014e578063a50e6fc914610161578063b17acdcd14610184578063b237adf51461019557600080fd5b806309b7d94b146100b957806315770f92146100ce578063158626f7146100e5578063372500ab146100cc57806351c6590a146100ed5780635c0f8f0114610100575b600080fd5b6100cc6100c7366004610253565b600055565b005b6000545b6040519081526020015b60405180910390f35b6002546100d2565b6100cc6100fb366004610253565b6101a8565b6100cc61010e366004610253565b600155565b6001546100d2565b61013361012936600461026c565b5060009081908190565b604080519384526020840192909252908201526060016100dc565b6100cc61015c366004610253565b6101c1565b61017461016f366004610253565b610221565b60405190151581526020016100dc565b6100cc610192366004610253565b50565b6100cc6101a3366004610253565b600255565b806000808282546101b991906102b2565b909155505050565b8060005410156102105760405162461bcd60e51b8152602060048201526016602482015275496e73756666696369656e74206c697175696469747960501b604482015260640160405180910390fd5b806000808282546101b991906102cb565b6000816002541061024b57816002600082825461023e91906102cb565b9091555060019392505050565b506000919050565b60006020828403121561026557600080fd5b5035919050565b60006020828403121561027e57600080fd5b81356001600160a01b038116811461029557600080fd5b9392505050565b634e487b7160e01b600052601160045260246000fd5b808201808211156102c5576102c561029c565b92915050565b818103818111156102c5576102c561029c56fea26469706673582212202b873498d309a2a1a96f7ea8003e7c11dd747af9a92002df5cc490db2f9f22d664736f6c63430008140033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100b45760003560e01c80636c321c8a116100715780636c321c8a146101135780637583902f1461011b5780639c8f9f231461014e578063a50e6fc914610161578063b17acdcd14610184578063b237adf51461019557600080fd5b806309b7d94b146100b957806315770f92146100ce578063158626f7146100e5578063372500ab146100cc57806351c6590a146100ed5780635c0f8f0114610100575b600080fd5b6100cc6100c7366004610253565b600055565b005b6000545b6040519081526020015b60405180910390f35b6002546100d2565b6100cc6100fb366004610253565b6101a8565b6100cc61010e366004610253565b600155565b6001546100d2565b61013361012936600461026c565b5060009081908190565b604080519384526020840192909252908201526060016100dc565b6100cc61015c366004610253565b6101c1565b61017461016f366004610253565b610221565b60405190151581526020016100dc565b6100cc610192366004610253565b50565b6100cc6101a3366004610253565b600255565b806000808282546101b991906102b2565b909155505050565b8060005410156102105760405162461bcd60e51b8152602060048201526016602482015275496e73756666696369656e74206c697175696469747960501b604482015260640160405180910390fd5b806000808282546101b991906102cb565b6000816002541061024b57816002600082825461023e91906102cb565b9091555060019392505050565b506000919050565b60006020828403121561026557600080fd5b5035919050565b60006020828403121561027e57600080fd5b81356001600160a01b038116811461029557600080fd5b9392505050565b634e487b7160e01b600052601160045260246000fd5b808201808211156102c5576102c561029c565b92915050565b818103818111156102c5576102c561029c56fea26469706673582212202b873498d309a2a1a96f7ea8003e7c11dd747af9a92002df5cc490db2f9f22d664736f6c63430008140033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

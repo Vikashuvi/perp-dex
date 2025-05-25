@@ -3,7 +3,6 @@ import { useAppSelector } from '../store/Hooks';
 import OrderForm from './OrderForm';
 import PositionsList from './PositionsList';
 import PriceChart from './PriceChart';
-import OrderBook from './OrderBook';
 
 const TradingInterface = () => {
   const { isConnected } = useAppSelector((state) => state.wallet);
@@ -106,30 +105,14 @@ const TradingInterface = () => {
                 >
                   Positions
                 </button>
-                <button
-                  className={`py-3 px-5 font-medium transition-colors duration-200 ${
-                    activeTab === 'orderbook'
-                      ? isDarkMode
-                        ? 'border-b-2 border-blue-500 text-blue-400'
-                        : 'border-b-2 border-blue-500 text-blue-600'
-                      : isDarkMode
-                        ? 'text-gray-400 hover:bg-gray-700'
-                        : 'text-gray-500 hover:bg-gray-100'
-                  }`}
-                  onClick={() => setActiveTab('orderbook')}
-                >
-                  Order Book
-                </button>
               </div>
             </div>
 
             <div className="p-4">
               {activeTab === 'trade' ? (
                 <OrderForm />
-              ) : activeTab === 'positions' ? (
-                <PositionsList />
               ) : (
-                <OrderBook />
+                <PositionsList />
               )}
             </div>
           </div>
